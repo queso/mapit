@@ -51,14 +51,12 @@ function buildMarkers(map_points, map) {
         map: map,
         title: name
     });
-    addInfoWindow(name, markers[i], map);
+    addInfoWindow(name, markers[i], map_points[i]["id"], map);
   }
   return markers;
 }
 
-function addInfoWindow(name, marker, map) {
-  google.maps.event.addListener(marker, "click", function() {
-    infowindow = new google.maps.InfoWindow({content: name});
-    infowindow.open(map, marker);
-  });
+function addInfoWindow(name, marker, id, map) {
+  eval("infoWindow_" + id + "= function() { infowindow = new google.maps.InfoWindow({content: name}); infowindow.open(map, marker); }" );
+  google.maps.event.addListener(marker, "click", eval("infoWindow_" + id) );
 }
