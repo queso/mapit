@@ -58,7 +58,6 @@ function buildMarkers(map_points, map) {
 
 function addInfoWindow(name, marker, map) {
   google.maps.event.addListener(marker, "click", function() {
-    if(infowindow) {infowindow.close()}
     infowindow = new google.maps.InfoWindow({content: name});
     infowindow.open(map, marker);
   });

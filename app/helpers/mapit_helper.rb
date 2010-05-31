@@ -7,6 +7,7 @@ module MapItHelper
   end
   
   def add_map(div, points, options = {})
+    points = points.to_markers unless points.first.class == Hash
     content_for :map do
       <<-END
         <script type="text/javascript">
