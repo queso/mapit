@@ -23,7 +23,7 @@ module MapIt
         Array.class_eval do
           
           def to_markers
-            collect {|item| item.to_marker}
+            collect {|item| item.to_marker unless item.blank?}
           end
           
         end
@@ -32,6 +32,7 @@ module MapIt
       module InstanceMethods
         
         def to_marker
+          return nil if self.latitude.zero? && self.longitude.zero?
           {:info => self.address, :latitude => self.latitude, :longitude => self.longitude}
         end
         

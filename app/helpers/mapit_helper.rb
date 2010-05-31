@@ -1,7 +1,7 @@
 module MapItHelper
   
   def add_map(div, points, options = {})
-    points = points.to_markers unless points.first.class == Hash
+    points = points.to_markers unless points.compact.first.class == Hash
     content_for :mapit do
       <<-END
         <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
