@@ -11,7 +11,7 @@ module MapItHelper
     content_for :map do
       <<-END
         <script type="text/javascript">
-          var map_points = #{points.to_json};
+          var map_points = #{points.compact.to_json};
           addLoadEvent( function () { buildMapIt("#{div}", map_points, ""); });
         </script>
       END
