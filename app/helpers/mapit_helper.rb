@@ -8,7 +8,7 @@ module MapItHelper
         #{javascript_include_tag 'mapit'}
         <script type="text/javascript">
           var map_points = #{points.compact.to_json};
-          addLoadEvent( function () { buildMapIt("#{div}", map_points, ""); });
+          addLoadEvent( function () { buildMapIt("#{div}", map_points, #{options.to_json}); });
         </script>
       END
     end

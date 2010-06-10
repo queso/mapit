@@ -23,7 +23,16 @@ module MapIt
         Array.class_eval do
           
           def to_markers
+            set_letters
             collect {|item| item.to_marker unless item.blank?}
+          end
+          
+          def set_letters
+            letter = "A"
+            each do |item|
+              item.letter = letter if item.respond_to?(:letter)
+              letter = letter.succ
+            end
           end
           
         end
@@ -33,7 +42,11 @@ module MapIt
         
         def to_marker
           return nil if self.latitude.zero? && self.longitude.zero?
-          {:info => self.address, :latitude => self.latitude, :longitude => self.longitude}
+          if self.respond_to?(:letter)
+            {:letter => self.letter, :info => self.address, :latitude => self.latitude, :longitude => self.longitude}
+          else
+            {:info => self.address, :latitude => self.latitude, :longitude => self.longitude}
+          end
         end
         
       end
