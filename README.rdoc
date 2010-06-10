@@ -1,6 +1,6 @@
 = mapit
 
-Description goes here.
+Mapit is a rails plugin that helps bridge the gap from ruby to js, using the latitude/longitude data that you store via ActiveRecord.  All it takes is a few quick line placements and you can easily integrate Google Maps v3 into any rails app. 
 
 == Note on Patches/Pull Requests
  
