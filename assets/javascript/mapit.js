@@ -17,7 +17,7 @@ function buildMapIt(map_div, points, options) {
   var map_type = options['map_type'] || google.maps.MapTypeId.ROADMAP;
   var label = options['labels'] || false;
   var map_type_control = options['map_type_control'] || true
-  var map_type_control_options_style = options['map_type_control_options']['style'] || google.maps.MapTypeControlStyle.DROP_DOWN
+  var map_type_control_options_style = (options['map_type_control_options']) ? options['map_type_control_options']['style'] || google.maps.MapTypeControlStyle.DEFAULT : google.maps.MapTypeControlStyle.DEFAULT;
   var myOptions = {
     zoom: 10,
     center: points[0]["latlng"],
