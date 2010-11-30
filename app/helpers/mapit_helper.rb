@@ -14,7 +14,7 @@ module MapItHelper
     end
   end
   
-  def link_to_infowindow(text, url, id, options => {})
+  def link_to_infowindow(text, url, id, options = {})
     link_to text, url, options.merge({:onclick => "infoWindow_#{id}(); return false;"})
   end
   
