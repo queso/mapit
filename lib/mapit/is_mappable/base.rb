@@ -43,9 +43,9 @@ module MapIt
         def to_marker
           return nil if self.latitude.zero? && self.longitude.zero?
           if self.respond_to?(:letter)
-            {:letter => self.letter, :info => self.address, :latitude => self.latitude, :longitude => self.longitude}
+            {:letter => self.letter, :info => self.address, :latitude => self.latitude, :longitude => self.longitude, :id => self.id}
           else
-            {:info => self.address, :latitude => self.latitude, :longitude => self.longitude}
+            {:info => self.address, :latitude => self.latitude, :longitude => self.longitude, :id => self.id}
           end
         end
         
