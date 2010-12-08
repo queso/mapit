@@ -10,7 +10,9 @@ module MapIt
       
       module Config
         
-        def is_mappable
+        def is_mappable(options = {})
+          class_inheritable_accessor :mapit_config
+          write_inheritable_attribute :mapit_config, Configuration.new(self, options)
           class_eval do
             extend MapIt::IsMappable::Base::ClassMethods
           end
@@ -39,13 +41,14 @@ module MapIt
       end
       
       module InstanceMethods
+        attr_accessor :letter
         
         def to_marker
-          return nil if self.lat.zero? && self.longitude.zero?
+          return nil if self.send(mapit_config.lat_column).zero? && self.send(mapit_config.lng_column).zero?
           if self.respond_to?(:letter)
-            {:letter => self.letter, :info => self.address, :latitude => self.lat, :longitude => self.longitude, :id => self.id}
+            {:letter => self.letter, :info => self.send(mapit_config.info_method), :latitude => self.send(mapit_config.lat_column), :longitude => self.send(mapit_config.lng_column), :id => self.id}
           else
-            {:info => self.address, :latitude => self.lat, :longitude => self.longitude, :id => self.id}
+            {:info => self.send(mapit_config.info_method), :latitude => self.send(mapit_config.lat_column), :longitude => self.send(mapit_config.lng_column), :id => self.id}
           end
         end
         
