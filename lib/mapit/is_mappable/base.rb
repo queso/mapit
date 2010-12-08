@@ -41,11 +41,11 @@ module MapIt
       module InstanceMethods
         
         def to_marker
-          return nil if self.latitude.zero? && self.longitude.zero?
+          return nil if self.lat.zero? && self.longitude.zero?
           if self.respond_to?(:letter)
-            {:letter => self.letter, :info => self.address, :latitude => self.latitude, :longitude => self.longitude, :id => self.id}
+            {:letter => self.letter, :info => self.address, :latitude => self.lat, :longitude => self.longitude, :id => self.id}
           else
-            {:info => self.address, :latitude => self.latitude, :longitude => self.longitude, :id => self.id}
+            {:info => self.address, :latitude => self.lat, :longitude => self.longitude, :id => self.id}
           end
         end
         
