@@ -19,12 +19,14 @@ module MapItHelper
   end
   
   def link_to_google_directions(text, end_point, options = {})
-    link_to text, "http://maps.google.com/maps?saddr=&daddr=#{end_point.latitude},#{end_point.longitude}", options
+    marker = end_point.to_marker
+    link_to text, "http://maps.google.com/maps?saddr=&daddr=#{marker[:latitude]},#{marker[:longitude]}", options
   end
   
   def google_directions_form(label, end_point, options = {})
+    marker = end_point.to_marker
     form_tag("http://maps.google.com/maps", :method => :get) do
-      hidden_field_tag(:daddr, "#{end_point.latitude}, #{end_point.longitude}") +
+      hidden_field_tag(:daddr, "#{marker[:latitude]}, #{marker[:longitude]}") +
       text_field_tag(:saddr) + 
       submit_tag(label)
     end
