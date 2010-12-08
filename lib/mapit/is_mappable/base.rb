@@ -44,7 +44,7 @@ module MapIt
         attr_accessor :letter
         
         def to_marker
-          return nil if self.send(mapit_config.lat_column).zero? && self.send(mapit_config.lng_column).zero?
+          return nil if self.send(mapit_config.lat_column).to_f.zero? && self.send(mapit_config.lng_column).to_f.zero?
           if self.respond_to?(:letter)
             {:letter => self.letter, :info => self.send(mapit_config.info_method), :latitude => self.send(mapit_config.lat_column), :longitude => self.send(mapit_config.lng_column), :id => self.id}
           else
