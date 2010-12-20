@@ -33,27 +33,27 @@ function buildMapIt(map_div, points, options) {
     }
   };
   map = new google.maps.Map(document.getElementById(map_div), myOptions); 
-	addMarkersAndCenter(points, label);
+  addMarkersAndCenter(points, label);
   if(options['zoom_level']) {
     setCustomZoomLevel(zoom_level);
-	}
+  }
 }
 
 function setCustomZoomLevel(zoom_level) {
   correctZoom = true;
   google.maps.event.addListener(map, 'zoom_changed', function() { 
-	  if ( map.getZoom() > zoom_level ) {
-		  if ( correctZoom ) {
-			  correctZoom = false;
-	  	  map.setZoom(zoom_level);
-			}
-	  }
-	});
+    if ( map.getZoom() > zoom_level ) {
+      if ( correctZoom ) {
+        correctZoom = false;
+        map.setZoom(zoom_level);
+      }
+    }
+  });
 }
 
 function addMarkersAndCenter(points, label) {
-	buildLatLng(points);
-	buildMarkers(points, label)
+  buildLatLng(points);
+  buildMarkers(points, label)
   var bounds = findCenterPoint(points)
   map.fitBounds(bounds);
 }
