@@ -12,14 +12,19 @@ function addLoadEvent(func) {
   }
 }
 
+var map;
+var markersArray = [];
+var infoArray = [];
+var correctZoom = false;
+
 function buildMapIt(map_div, points, options) {
-  buildLatLng(points);
   var map_type = options['map_type'] || google.maps.MapTypeId.ROADMAP;
   var label = options['labels'] || false;
+	var zoom_level = options['zoom_level'] || 10;
   var map_type_control = options['map_type_control'] || true
   var map_type_control_options_style = (options['map_type_control_options']) ? options['map_type_control_options']['style'] || google.maps.MapTypeControlStyle.DEFAULT : google.maps.MapTypeControlStyle.DEFAULT;
   var myOptions = {
-    zoom: 10,
+    zoom: zoom_level,
     center: points[0]["latlng"],
     mapTypeId: map_type,
     mapTypeControl: map_type_control,
@@ -27,10 +32,28 @@ function buildMapIt(map_div, points, options) {
       style: map_type_control_options_style
     }
   };
-  
-  var map = new google.maps.Map(document.getElementById(map_div), myOptions);
-  
-  var markers = buildMarkers(points, map, label)
+  map = new google.maps.Map(document.getElementById(map_div), myOptions); 
+	addMarkersAndCenter(points, label);
+	if(options['zoom_level']) {
+		correctZoom = true;
+		setCustomZoomLevel(zoom_level);
+	}
+}
+
+function setCustomZoomLevel(zoom_level) {
+	google.maps.event.addListener(map, 'zoom_changed', function() { 
+	  if ( map.getZoom() > zoom_level ) {
+			if ( correctZoom ) {
+				correctZoom = false;
+	  		map.setZoom(zoom_level);
+			}
+	  }
+	});
+}
+
+function addMarkersAndCenter(points, label) {
+	buildLatLng(points);
+	buildMarkers(points, label)
   var bounds = findCenterPoint(points)
   map.fitBounds(bounds);
 }
@@ -49,8 +72,7 @@ function findCenterPoint(map_points) {
   return bounds
 }
 
-function buildMarkers(map_points, map, label) {
-  var markers = new Array();
+function buildMarkers(map_points, label) {
   for(i = 0; i < map_points.length; i++) {
     name = map_points[i]["info"];
     options = {
@@ -60,11 +82,39 @@ function buildMarkers(map_points, map, label) {
         icon: addLabels(map_points[i], label),
         shadow: addShadows(map_points[i], label)
     }
-    markers[i] = new google.maps.Marker(options);
-    addInfoWindow(name, markers[i], map_points[i]["id"], map);
+    marker = new google.maps.Marker(options);
+    addInfoWindow(name, marker, map_points[i]["id"], map);
+		markersArray.push(marker);
   }
-  return markers;
 }
+
+function deleteMarkers() {
+  if (markersArray) {
+    for (i in markersArray) {
+      markersArray[i].setMap(null);
+    }
+    markersArray.length = 0;
+  }
+}
+
+// Removes the overlays from the map, but keeps them in the array
+function clearMarkers() {
+  if (markersArray) {
+    for (i in markersArray) {
+      markersArray[i].setMap(null);
+    }
+  }
+}
+
+// Shows any overlays currently in the array
+function showMarkers() {
+  if (markersArray) {
+    for (i in markersArray) {
+      markersArray[i].setMap(map);
+    }
+  }
+}
+
 
 function addLabels(map_point, label) {
   if (label == true) {
@@ -93,6 +143,15 @@ function addShadows(map_point, label) {
 }
 
 function addInfoWindow(name, marker, id, map) {
-  eval("infoWindow_" + id + "= function() { infowindow = new google.maps.InfoWindow({content: name}); infowindow.open(map, marker); }" );
-  google.maps.event.addListener(marker, "click", eval("infoWindow_" + id) );
+	var infowindow_id = "infoWindow_" + id;
+  eval(infowindow_id + "= function() { closeInfoWindows(); infowindow = new google.maps.InfoWindow({content: name}); infoArray.push(infowindow); infowindow.open(map, marker); }" );
+  google.maps.event.addListener(marker, "click", infowindow_id );
+}
+
+function closeInfoWindows() {
+	if (infoArray) {
+    for (i in infoArray) {
+      infoArray[i].close();
+    }
+  }
 }
