@@ -20,7 +20,7 @@ var correctZoom = false;
 function buildMapIt(map_div, points, options) {
   var map_type = options['map_type'] || google.maps.MapTypeId.ROADMAP;
   var label = options['labels'] || false;
-	var zoom_level = options['zoom_level'] || 10;
+  var zoom_level = options['zoom_level'] || 10;
   var map_type_control = options['map_type_control'] || true
   var map_type_control_options_style = (options['map_type_control_options']) ? options['map_type_control_options']['style'] || google.maps.MapTypeControlStyle.DEFAULT : google.maps.MapTypeControlStyle.DEFAULT;
   var myOptions = {
@@ -34,18 +34,18 @@ function buildMapIt(map_div, points, options) {
   };
   map = new google.maps.Map(document.getElementById(map_div), myOptions); 
 	addMarkersAndCenter(points, label);
-	if(options['zoom_level']) {
-		setCustomZoomLevel(zoom_level);
+  if(options['zoom_level']) {
+    setCustomZoomLevel(zoom_level);
 	}
 }
 
 function setCustomZoomLevel(zoom_level) {
-	correctZoom = true;
-	google.maps.event.addListener(map, 'zoom_changed', function() { 
+  correctZoom = true;
+  google.maps.event.addListener(map, 'zoom_changed', function() { 
 	  if ( map.getZoom() > zoom_level ) {
-			if ( correctZoom ) {
-				correctZoom = false;
-	  		map.setZoom(zoom_level);
+		  if ( correctZoom ) {
+			  correctZoom = false;
+	  	  map.setZoom(zoom_level);
 			}
 	  }
 	});
@@ -84,7 +84,7 @@ function buildMarkers(map_points, label) {
     }
     marker = new google.maps.Marker(options);
     addInfoWindow(name, marker, map_points[i]["id"], map);
-		markersArray.push(marker);
+    markersArray.push(marker);
   }
 }
 
@@ -143,13 +143,13 @@ function addShadows(map_point, label) {
 }
 
 function addInfoWindow(name, marker, id, map) {
-	var infowindow_id = "infoWindow_" + id;
+  var infowindow_id = "infoWindow_" + id;
   eval(infowindow_id + "= function() { closeInfoWindows(); infowindow = new google.maps.InfoWindow({content: name}); infoArray.push(infowindow); infowindow.open(map, marker); }" );
   google.maps.event.addListener(marker, "click", infowindow_id );
 }
 
 function closeInfoWindows() {
-	if (infoArray) {
+  if (infoArray) {
     for (i in infoArray) {
       infoArray[i].close();
     }
