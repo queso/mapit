@@ -35,12 +35,12 @@ function buildMapIt(map_div, points, options) {
   map = new google.maps.Map(document.getElementById(map_div), myOptions); 
 	addMarkersAndCenter(points, label);
 	if(options['zoom_level']) {
-		correctZoom = true;
 		setCustomZoomLevel(zoom_level);
 	}
 }
 
 function setCustomZoomLevel(zoom_level) {
+	correctZoom = true;
 	google.maps.event.addListener(map, 'zoom_changed', function() { 
 	  if ( map.getZoom() > zoom_level ) {
 			if ( correctZoom ) {
