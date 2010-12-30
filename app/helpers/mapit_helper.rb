@@ -2,7 +2,7 @@ module MapItHelper
   
   def add_map(div, points, options = {})
     if options[:combine_locations]
-      points = points.to_unique_markers unless points.compact.first.class == Hash
+      points = points.to_unique_markers(:joiner => options[:joiner]) unless points.compact.first.class == Hash
     else
       points = points.to_markers unless points.compact.first.class == Hash
     end
